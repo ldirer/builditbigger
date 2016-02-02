@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">jokeDisplayer</string>
+    <string name="placeholder_joke">So, this is the story of a penguin that...</string>
+</resources>

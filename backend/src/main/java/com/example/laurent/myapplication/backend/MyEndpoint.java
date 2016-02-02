@@ -24,6 +24,13 @@ import javax.inject.Named;
 )
 public class MyEndpoint {
 
+    @ApiMethod(name="getJoke", httpMethod = "GET") //, path = "joke")
+    public MyBean getJoke(){
+        MyBean response = new MyBean();
+        response.setData("So, this is the story of a penguin that breathes...");
+        return response;
+    }
+
     /** A simple endpoint method that takes a name and says Hi back */
     @ApiMethod(name = "sayHi")
     public MyBean sayHi(@Named("name") String name) {
@@ -32,5 +39,6 @@ public class MyEndpoint {
 
         return response;
     }
+
 
 }

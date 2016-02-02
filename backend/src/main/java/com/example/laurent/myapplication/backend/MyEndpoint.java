@@ -6,6 +6,7 @@
 
 package com.example.laurent.myapplication.backend;
 
+import com.example.JokeProvider;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
@@ -24,10 +25,18 @@ import javax.inject.Named;
 )
 public class MyEndpoint {
 
+    public JokeProvider mJokeProvider;
+
+    public MyEndpoint() {
+        super();
+        mJokeProvider = new JokeProvider();
+    }
+
     @ApiMethod(name="getJoke", httpMethod = "GET") //, path = "joke")
     public MyBean getJoke(){
         MyBean response = new MyBean();
-        response.setData("So, this is the story of a penguin that breathes...");
+//        response.setData("So, this is the story of a penguin that breathes...");
+        response.setData(mJokeProvider.getJoke());
         return response;
     }
 

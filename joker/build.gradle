@@ -1,0 +1,9 @@
+import sun.misc.Launcher
+
+apply plugin: 'java'
+sourceCompatibility = 1.7
+//println Launcher.getBootstrapClassPath()
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}

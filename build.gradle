@@ -12,9 +12,29 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+//configurations.all({it -> println it})
 
 allprojects {
     repositories {
         jcenter()
     }
+}
+
+// Some config so that we can run other tasks after appengineRun
+tasks.findByPath(":backend:appengineRun").setProperty("daemon", true)
+
+task launchBackendAndTest {
+    // appengineStartBackend seems to be to start backend on the *cloud* App Engine.
+    dependsOn(["backend:appengineRun", ":app:connectedAndroidTest"])
+    println "IM BEING RUN"
+    // Used for debug but interestingly it lists only top level tasks.
+    // tasks.all({it2 -> println it2.name})
+
+    // Here we can't pass "backend:appengineRun" as a string cuz Groovy goes looking for it into the :app project (which makes sense).
+    tasks.findByPath(":app:connectedAndroidTest").shouldRunAfter(tasks.findByPath("backend:appengineRun"))
+    finalizedBy ":backend:appengineStop"
+
+
+    // Found advice similar to that on the internet. Circular reference error, looks terrible practice anyway!
+//    tasks.findByPath(":backend:appengineRun").mustRunAfter(":backend:appengineStop")
 }

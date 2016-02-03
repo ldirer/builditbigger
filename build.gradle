@@ -20,21 +20,47 @@ allprojects {
     }
 }
 
-// Some config so that we can run other tasks after appengineRun
-tasks.findByPath(":backend:appengineRun").setProperty("daemon", true)
+
+def getAvailablePort (){
+    def ports = 8080..9000
+    def availablePort = 8080
+    for (port in ports) {
+        try {
+            // I was using the following line, does not work.
+            // Looks like there's a nuance between connect and bind that I don't know.
+//            Socket socket = new Socket("127.0.0.1", port)
+            Socket socket = new Socket()
+            socket.bind(new InetSocketAddress("127.0.0.1", port))
+            socket.close()
+            availablePort = port
+//            println "HERE IS MY AVAILABLE PORT $port"
+            break
+        }
+        catch(e){
+//            println e
+        }
+    }
+    availablePort
+}
+
+//def availablePort = getAvailablePort()
+//println "Available port I found: $availablePort"
 
 task launchBackendAndTest {
-    // appengineStartBackend seems to be to start backend on the *cloud* App Engine.
+    // Some config so that we can run other tasks after appengineRun
+    tasks.findByPath(":backend:appengineRun").setProperty("daemon", true)
+    def availablePort = getAvailablePort()
+    tasks.findByPath(":backend:appengineRun").setProperty("httpPort", availablePort)
     dependsOn(["backend:appengineRun", ":app:connectedAndroidTest"])
-    println "IM BEING RUN"
-    // Used for debug but interestingly it lists only top level tasks.
+
+    // I used that for debug but interestingly it lists only top level tasks.
     // tasks.all({it2 -> println it2.name})
 
     // Here we can't pass "backend:appengineRun" as a string cuz Groovy goes looking for it into the :app project (which makes sense).
     tasks.findByPath(":app:connectedAndroidTest").shouldRunAfter(tasks.findByPath("backend:appengineRun"))
     finalizedBy ":backend:appengineStop"
 
-
     // Found advice similar to that on the internet. Circular reference error, looks terrible practice anyway!
 //    tasks.findByPath(":backend:appengineRun").mustRunAfter(":backend:appengineStop")
 }
+

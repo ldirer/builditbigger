@@ -17,10 +17,17 @@ import java.io.IOException;
 class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     private static final String LOG_TAG = EndpointsAsyncTask.class.getSimpleName();
     private static MyApi myApiService = null;
+    private static String mRootUrl = null;
     private Context context;
 
     public EndpointsAsyncTask() {
         super();
+        mRootUrl = "https://build-it-bigger-1210.appspot.com/_ah/api/";
+    }
+
+    public EndpointsAsyncTask(String rootUrl) {
+        super();
+        mRootUrl = rootUrl;
     }
 
 
@@ -34,7 +41,7 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
                     // - 10.0.2.2 is localhost's IP address in Android emulator
                     // - turn off compression when running against local devappserver
 //                    .setRootUrl("http://10.0.3.2:8080/_ah/api/")
-                    .setRootUrl("https://build-it-bigger-1210.appspot.com/_ah/api/")
+                    .setRootUrl(mRootUrl)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {

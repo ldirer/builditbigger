@@ -35,9 +35,15 @@ public class EndpointsAsyncTaskTest {
         mContext = mActivityRule.getActivity();
     }
 
+    /**
+     * Test doInBackground using the local development server.
+     * @throws Exception
+     */
     @org.junit.Test
-    public void testDoInBackground() throws Exception {
-        EndpointsAsyncTask task = new EndpointsAsyncTask();
+    public void testDoInBackgroundLocal() throws Exception {
+        String localUrl = "http://10.0.3.2:8080/_ah/api/";
+        EndpointsAsyncTask task = new EndpointsAsyncTask(localUrl);
+
         // Since we call it directly doInBackground runs on the main thread.
         String result = task.doInBackground(mContext);
         Log.d(LOG_TAG, "Result=" + result);

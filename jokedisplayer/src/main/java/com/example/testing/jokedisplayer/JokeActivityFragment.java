@@ -3,6 +3,7 @@ package com.example.testing.jokedisplayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class JokeActivityFragment extends Fragment {
         View root = inflater.inflate(R.layout.joke_fragment, container, false);
         TextView jokeTextView = (TextView) root.findViewById(R.id.joke_text_view);
         if (null != mJoke) {
-            jokeTextView.setText(mJoke);
+            jokeTextView.setText(Html.fromHtml(mJoke));
         }
         return root;
     }

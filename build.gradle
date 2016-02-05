@@ -43,13 +43,13 @@ def getAvailablePort (){
     availablePort
 }
 
-//def availablePort = getAvailablePort()
-//println "Available port I found: $availablePort"
+def availablePort = getAvailablePort()
 
 task launchBackendAndTest {
     // Some config so that we can run other tasks after appengineRun
     tasks.findByPath(":backend:appengineRun").setProperty("daemon", true)
-    def availablePort = getAvailablePort()
+//    def availablePort = getAvailablePort()
+//    println "Available port I found: $availablePort"
     tasks.findByPath(":backend:appengineRun").setProperty("httpPort", availablePort)
     dependsOn(["backend:appengineRun", ":app:connectedAndroidTest"])
 

@@ -12,6 +12,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Properties;
+
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
@@ -41,6 +45,13 @@ public class EndpointsAsyncTaskTest {
      */
     @org.junit.Test
     public void testDoInBackgroundLocal() throws Exception {
+        // TODO
+        Properties props = new Properties();
+        FileInputStream propsFile = new FileInputStream("../../../gradle.properties");
+        props.load(propsFile);
+        props.getProperty("myprop");
+
+
         String localUrl = "http://10.0.3.2:8080/_ah/api/";
         EndpointsAsyncTask task = new EndpointsAsyncTask(localUrl);
 

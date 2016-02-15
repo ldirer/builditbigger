@@ -44,21 +44,39 @@ def getAvailablePort (){
 }
 
 def availablePort = getAvailablePort()
+task myLameDebug << {
+    def lst = (List) childProjects.keySet().toList()
+    println lst.class
+    Properties props = new Properties()
+    String propertiesPath = "/home/laurent/AndroidStudioProjects/build_it_bigger/app/gradle.properties"
+    File propFile = new File(propertiesPath)
+    props.load(propFile.newDataInputStream())
+    lst = ["a", "b", "c"]
+    lst.collect()
+    //.all({it2 -> println it2})
+    props.setProperty("myprop", "hop")
+    // YA DON'T NEED NO PARENTHESES.
+    props.store propFile.newWriter(), null
+}
 
 task launchBackendAndTest {
     // Some config so that we can run other tasks after appengineRun
     tasks.findByPath(":backend:appengineRun").setProperty("daemon", true)
 //    def availablePort = getAvailablePort()
-//    println "Available port I found: $availablePort"
+    println "Available port I found: $availablePort"
     tasks.findByPath(":backend:appengineRun").setProperty("httpPort", availablePort)
     dependsOn(["backend:appengineRun", ":app:connectedAndroidTest"])
 
     // I used that for debug but interestingly it lists only top level tasks.
-    // tasks.all({it2 -> println it2.name})
+     //tasks.all({it2 -> println it2.name})
 
     // Here we can't pass "backend:appengineRun" as a string cuz Groovy goes looking for it into the :app project (which makes sense).
     tasks.findByPath(":app:connectedAndroidTest").shouldRunAfter(tasks.findByPath("backend:appengineRun"))
     finalizedBy ":backend:appengineStop"
+
+    doLast {
+
+    }
 
     // Found advice similar to that on the internet. Circular reference error, looks terrible practice anyway!
 //    tasks.findByPath(":backend:appengineRun").mustRunAfter(":backend:appengineStop")

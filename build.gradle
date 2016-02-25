@@ -44,6 +44,7 @@ def getAvailablePort (){
 }
 
 def availablePort = getAvailablePort()
+
 task myLameDebug << {
     def lst = (List) childProjects.keySet().toList()
     println lst.class
@@ -55,7 +56,6 @@ task myLameDebug << {
     lst.collect()
     //.all({it2 -> println it2})
     props.setProperty("myprop", "hop")
-    // YA DON'T NEED NO PARENTHESES.
     props.store propFile.newWriter(), null
 }
 

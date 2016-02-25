@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
+import android.util.TypedValue;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,6 +16,7 @@ import org.junit.runner.RunWith;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
+import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
@@ -46,13 +48,16 @@ public class EndpointsAsyncTaskTest {
     @org.junit.Test
     public void testDoInBackgroundLocal() throws Exception {
         // TODO
-        Properties props = new Properties();
-        FileInputStream propsFile = new FileInputStream("../../../gradle.properties");
-        props.load(propsFile);
-        props.getProperty("myprop");
+//        Properties props = new Properties();
+//        FileInputStream propsFile = new FileInputStream("../../../gradle.properties");
+//        Scanner scanner = new Scanner();
+//        props.load(propsFile);
+//        props.getProperty("myprop");
 
+//        Integer myPort = 0;
+        String myPort = mContext.getResources().getString(R.string.TEST_SERVER_PORT);
 
-        String localUrl = "http://10.0.3.2:8080/_ah/api/";
+        String localUrl = String.format("http://10.0.3.2:%s/_ah/api/", myPort);
         EndpointsAsyncTask task = new EndpointsAsyncTask(localUrl);
 
         // Since we call it directly doInBackground runs on the main thread.

@@ -1,4 +1,27 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'com.android.tools.build:gradle'
+
+def getAvailablePort (){
+    def ports = 8080..9000
+    def availablePort = 8080
+    for (port in ports) {
+        try {
+            // I was using the following line, does not work.
+            // Looks like there's a nuance between connect and bind that I don't know.
+//            Socket socket = new Socket("127.0.0.1", port)
+            Socket socket = new Socket()
+            socket.bind(new InetSocketAddress("127.0.0.1", port))
+            socket.close()
+            availablePort = port
+//            println "HERE IS MY AVAILABLE PORT $port"
+            break
+        }
+        catch(e){
+//            println e
+        }
+    }
+    availablePort
+}
 
 android {
     compileSdkVersion 23
@@ -10,8 +33,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
+        multiDexEnabled true // launch server - run tests - shut server down needs this.
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue "string", "TEST_SERVER_PORT", getAvailablePort().toString()
     }
 
     dexOptions {
@@ -22,6 +46,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //TODO: add a resValue here with the local dev server url??
+//            buildConfigField("int", "TEST_SERVER_PORT", getAvailablePort().toString())
         }
     }
 
@@ -52,6 +77,7 @@ dependencies {
     compile project(path: ':backend', configuration: 'android-endpoints')
 
     // Added for AdMob
+    // We COULD (should) import only the part of the play services we need.
     freeCompile 'com.google.android.gms:play-services:8.4.0'
 
     androidTestCompile 'junit:junit:4.6'

@@ -47,14 +47,6 @@ public class EndpointsAsyncTaskTest {
      */
     @org.junit.Test
     public void testDoInBackgroundLocal() throws Exception {
-        // TODO
-//        Properties props = new Properties();
-//        FileInputStream propsFile = new FileInputStream("../../../gradle.properties");
-//        Scanner scanner = new Scanner();
-//        props.load(propsFile);
-//        props.getProperty("myprop");
-
-//        Integer myPort = 0;
         String myPort = mContext.getResources().getString(R.string.TEST_SERVER_PORT);
 
         String localUrl = String.format("http://10.0.3.2:%s/_ah/api/", myPort);

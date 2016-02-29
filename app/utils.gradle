@@ -1,0 +1,27 @@
+def getAvailablePort (){
+    def ports = 8080..9000
+    def availablePort = 8080
+    for (port in ports) {
+        try {
+            // I was using the following line, does not work.
+            // Looks like there's a nuance between connect and bind that I don't know.
+//            Socket socket = new Socket("127.0.0.1", port)
+            Socket socket = new Socket()
+            socket.bind(new InetSocketAddress("127.0.0.1", port))
+            socket.close()
+            availablePort = port
+//            println "HERE IS MY AVAILABLE PORT $port"
+            break
+        }
+        catch(e){
+//            println e
+        }
+    }
+    availablePort
+}
+
+
+// Export methods by turning them into closures
+ext {
+    getAvailablePort = this.&getAvailablePort
+}

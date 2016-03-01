@@ -1,3 +1,10 @@
+// Source: http://stackoverflow.com/questions/18715137/extract-common-methods-from-gradle-build-script
+
+/**
+ * Scan ports and return one that's available. Ultimately to launch the test server.
+ * Note this is overkill, but it was a good excuse to write an actual method in groovy.
+ * @return
+ */
 def getAvailablePort (){
     def ports = 8080..9000
     def availablePort = 8080
@@ -5,12 +12,11 @@ def getAvailablePort (){
         try {
             // I was using the following line, does not work.
             // Looks like there's a nuance between connect and bind that I don't know.
-//            Socket socket = new Socket("127.0.0.1", port)
+            // Socket socket = new Socket("127.0.0.1", port)
             Socket socket = new Socket()
             socket.bind(new InetSocketAddress("127.0.0.1", port))
             socket.close()
             availablePort = port
-//            println "HERE IS MY AVAILABLE PORT $port"
             break
         }
         catch(e){
